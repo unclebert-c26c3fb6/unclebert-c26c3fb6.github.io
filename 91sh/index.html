@@ -1,0 +1,1550 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>91.short.com - AI 短链与内容分发枢纽</title>
+  <meta name="description" content="91.short.com 是 AI 驱动的智能短链接与内容分发枢纽，汇聚短链生成、链接分析、智能路由、API 接入与内容聚合工具，适合开发者、营销人员与内容运营者使用。">
+  <meta name="keywords" content="智能短链,链接分析,短网址API,内容分发,URL管理">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --primary: #1e40af;
+      --primary-light: #dbeafe;
+      --accent: #0ea5e9;
+      --accent-glow: rgba(14, 165, 233, 0.15);
+      --success: #059669;
+      --warning: #d97706;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.1);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      --font-mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+      --header-offset: 112px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--header-offset);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: var(--accent);
+    }
+
+    /* 吸顶公告条 */
+    .announce-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+      color: #ffffff;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.25rem;
+      text-align: center;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .announce-bar::-webkit-scrollbar { display: none; }
+    .announce-bar .badge {
+      display: inline-block;
+      background: #fbbf24;
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* 吸顶页头 */
+    .site-header {
+      position: sticky;
+      top: 32px;
+      z-index: 99;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+    .brand svg {
+      width: 32px;
+      height: 32px;
+    }
+    .brand span {
+      background: linear-gradient(135deg, #1e40af, #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      list-style: none;
+      flex: 1;
+      min-width: 0;
+    }
+    .main-nav a {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      background: var(--primary-light);
+      color: var(--primary);
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .header-cta:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* 首屏 */
+    .hero {
+      background: linear-gradient(160deg, #f0f9ff 0%, #f8fafc 40%, #eef2ff 100%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 0.85fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .hero-content h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 1.5rem;
+      line-height: 1.75;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.4rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.4rem;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-svg {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      filter: drop-shadow(0 8px 24px rgba(30, 64, 175, 0.12));
+    }
+
+    /* 主体布局：三栏门户 */
+    .page-layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 260px;
+      gap: 1.75rem;
+      padding: 2rem 1.5rem;
+      align-items: start;
+    }
+
+    /* 左频道索引 */
+    .channel-index {
+      position: sticky;
+      top: calc(var(--header-offset) + 1rem);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 0.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .channel-index h2 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding: 0 0.5rem;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+    .channel-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .channel-list a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .channel-list a:hover,
+    .channel-list a:focus-visible {
+      background: var(--primary-light);
+      color: var(--primary);
+      outline: none;
+    }
+    .channel-list a .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* 中间主内容 */
+    .main-content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .section-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .section-header .more-link {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* 概览 */
+    .overview-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .overview-text p + p {
+      margin-top: 0.65rem;
+    }
+
+    /* 精选卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .content-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .content-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .content-card .card-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .content-card .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag.accent {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+    .tag.success {
+      background: #d1fae5;
+      color: var(--success);
+    }
+    .content-card .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .content-card .card-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding-top: 0.25rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    /* 最新更新紧凑列表 */
+    .update-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .update-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .update-list li:last-child {
+      border-bottom: none;
+    }
+    .update-list .update-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      min-width: 72px;
+      padding-top: 0.15rem;
+    }
+    .update-list .update-name {
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .update-list .update-summary {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    /* 分类入口 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    .category-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.85rem 0.5rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .category-item:hover,
+    .category-item:focus-visible {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+      outline: none;
+    }
+    .category-item .cat-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    /* 深度解析正文 */
+    .deep-dive h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 1.25rem 0 0.5rem;
+    }
+    .deep-dive h3:first-of-type {
+      margin-top: 0;
+    }
+    .deep-dive p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 0.65rem;
+    }
+    .deep-dive ul {
+      padding-left: 1.25rem;
+      margin-bottom: 0.65rem;
+    }
+    .deep-dive li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 0.25rem;
+    }
+
+    /* 体验指南 - 编号步骤 */
+    .steps-list {
+      list-style: none;
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .steps-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+    }
+    .steps-list li::before {
+      content: counter(step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .steps-list .step-content strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+    .steps-list .step-content span {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* FAQ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .faq-item summary {
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      cursor: pointer;
+      background: var(--surface-alt);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .faq-item[open] summary::after {
+      content: "−";
+    }
+    .faq-item summary:hover,
+    .faq-item summary:focus-visible {
+      background: var(--primary-light);
+      outline: none;
+    }
+    .faq-item .faq-answer {
+      padding: 0.75rem 1rem;
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    /* 评论 */
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+    .comment-item {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .comment-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .comment-body .comment-nick {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .comment-body .comment-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .comment-body .comment-date {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* 相关资讯 */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .news-item {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .news-item .news-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      min-width: 82px;
+      padding-top: 0.1rem;
+    }
+    .news-item .news-content .news-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+    .news-item .news-content .news-summary {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* 相关推荐标签索引 */
+    .tag-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tag-index a {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .tag-index a:hover,
+    .tag-index a:focus-visible {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    /* 热门榜单 */
+    .hot-rank-list {
+      list-style: none;
+      counter-reset: rank;
+    }
+    .hot-rank-list li {
+      counter-increment: rank;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+    .hot-rank-list li:last-child { border-bottom: none; }
+    .hot-rank-list li::before {
+      content: counter(rank);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-alt);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .hot-rank-list li:nth-child(1)::before { background: #fef3c7; color: #d97706; }
+    .hot-rank-list li:nth-child(2)::before { background: #e0e7ff; color: #4338ca; }
+    .hot-rank-list li:nth-child(3)::before { background: #fce7f3; color: #be185d; }
+    .hot-rank-list .rank-name {
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .hot-rank-list .rank-desc {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* 右辅助栏 */
+    .right-sidebar {
+      position: sticky;
+      top: calc(var(--header-offset) + 1rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .sidebar-card h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .sidebar-card .update-stream {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-card .update-stream li {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .sidebar-card .update-stream li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .sidebar-card .update-stream li .time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* 页尾 */
+    .site-footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      margin-top: 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 2rem;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .footer-brand .brand-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.65;
+      max-width: 320px;
+    }
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .footer-links h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.6rem;
+    }
+    .footer-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .footer-links a {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover {
+      color: #fff;
+    }
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    /* 响应式 */
+    @media (max-width: 1024px) {
+      .page-layout {
+        grid-template-columns: 1fr 240px;
+      }
+      .channel-index {
+        display: none;
+      }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .hero-visual {
+        order: -1;
+      }
+      .hero-svg {
+        max-width: 300px;
+      }
+      .category-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 740px) {
+      :root {
+        --header-offset: 104px;
+      }
+      .page-layout {
+        grid-template-columns: 1fr;
+        padding: 1.25rem 1rem;
+      }
+      .right-sidebar {
+        position: static;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .main-nav {
+        display: none;
+      }
+      .header-inner {
+        justify-content: space-between;
+      }
+      .update-list li {
+        flex-wrap: wrap;
+      }
+      .news-item {
+        flex-wrap: wrap;
+      }
+      .announce-bar {
+        font-size: 0.78rem;
+      }
+      .hero-inner {
+        padding: 2rem 1rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .category-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 键盘焦点可见 */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+  <!-- 吸顶公告条 -->
+  <div class="announce-bar" role="status">
+    <span class="badge">NEW</span> 本周新增 12 个 API 端点与 8 个智能路由模板 · 短链分析看板上线 · 11 月 8 日更新
+  </div>
+
+  <!-- 吸顶页头 -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/#hero" class="brand" aria-label="91.short.com 首页">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#brandGrad)"/>
+          <path d="M10 20 L16 10 L22 20" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="16" cy="23" r="1.8" fill="#fff"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="2" y1="2" x2="30" y2="30">
+              <stop offset="0%" stop-color="#1e40af"/>
+              <stop offset="100%" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>91.short.com</span>
+      </a>
+
+      <nav aria-label="主题导航">
+        <ul class="main-nav">
+          <li><a href="/#featured">精选工具</a></li>
+          <li><a href="/#latest">最新更新</a></li>
+          <li><a href="/#categories">分类入口</a></li>
+          <li><a href="/#deep-dive">深度解析</a></li>
+          <li><a href="/#guide">体验指南</a></li>
+          <li><a href="/#faq">常见问题</a></li>
+          <li><a href="/#news">相关资讯</a></li>
+        </ul>
+      </nav>
+
+      <a href="/#featured" class="header-cta">开始使用</a>
+    </div>
+  </header>
+
+  <!-- 主题首屏 -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1>91.short.com</h1>
+        <p class="hero-desc">
+          汇聚智能短链生成、链接分析、智能路由与内容分发工具。面向开发者、营销人员与内容运营者，提供短链 API 接入、批量管理、点击统计与安全检测等具体功能。
+        </p>
+        <div class="hero-actions">
+          <a href="/#featured" class="btn-primary">浏览工具</a>
+          <a href="/#latest" class="btn-outline">查看更新</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg class="hero-svg" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="短链接分发网络示意图">
+          <rect x="20" y="20" width="360" height="280" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+          <circle cx="90" cy="90" r="32" fill="#dbeafe" stroke="#1e40af" stroke-width="1.5"/>
+          <text x="90" y="96" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="700" font-family="sans-serif">URL</text>
+          <line x1="122" y1="90" x2="180" y2="90" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="210" cy="90" r="28" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.5"/>
+          <text x="210" y="96" text-anchor="middle" fill="#0ea5e9" font-size="12" font-weight="700" font-family="sans-serif">AI</text>
+          <line x1="238" y1="90" x2="290" y2="90" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <rect x="290" y="64" width="56" height="52" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+          <text x="318" y="88" text-anchor="middle" fill="#059669" font-size="11" font-weight="700" font-family="sans-serif">短链</text>
+          <text x="318" y="104" text-anchor="middle" fill="#059669" font-size="9" font-family="sans-serif">分发</text>
+
+          <circle cx="90" cy="200" r="28" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+          <text x="90" y="206" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700" font-family="sans-serif">点击</text>
+          <line x1="118" y1="200" x2="170" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="200" cy="200" r="28" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="200" y="206" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="700" font-family="sans-serif">分析</text>
+          <line x1="228" y1="200" x2="280" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <rect x="280" y="174" width="66" height="52" rx="10" fill="#fdf2f8" stroke="#be185d" stroke-width="1.5"/>
+          <text x="313" y="198" text-anchor="middle" fill="#be185d" font-size="11" font-weight="700" font-family="sans-serif">报表</text>
+          <text x="313" y="214" text-anchor="middle" fill="#be185d" font-size="9" font-family="sans-serif">实时</text>
+
+          <line x1="90" y1="122" x2="90" y2="172" stroke="#cbd5e1" stroke-width="1.5"/>
+          <line x1="318" y1="116" x2="318" y2="174" stroke="#cbd5e1" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主体三栏门户 -->
+  <div class="page-layout">
+
+    <!-- 左频道索引 -->
+    <aside class="channel-index" aria-label="频道索引">
+      <h2>频道</h2>
+      <ul class="channel-list">
+        <li><a href="/#featured"><span class="dot"></span>短链生成</a></li>
+        <li><a href="/#featured"><span class="dot"></span>API 接入</a></li>
+        <li><a href="/#featured"><span class="dot"></span>链接分析</a></li>
+        <li><a href="/#featured"><span class="dot"></span>智能路由</a></li>
+        <li><a href="/#featured"><span class="dot"></span>批量管理</a></li>
+        <li><a href="/#featured"><span class="dot"></span>安全检测</a></li>
+        <li><a href="/#featured"><span class="dot"></span>内容分发</a></li>
+        <li><a href="/#featured"><span class="dot"></span>数据看板</a></li>
+      </ul>
+    </aside>
+
+    <!-- 中间主内容区 -->
+    <main class="main-content">
+
+      <!-- 1. 主题领域概览 -->
+      <section class="section-card" id="overview">
+        <div class="section-header">
+          <h2>短链接与内容分发概览</h2>
+        </div>
+        <div class="overview-text">
+          <p>
+            短链接服务是将长网址转换为简短易分享链接的工具，广泛应用于社交媒体、短信营销、二维码生成等场景。91.short.com 围绕短链生成、链接分析、智能路由与内容分发四个方向，提供从链接创建到点击追踪的完整工具链。当前主流短链平台的核心能力包括批量生成、自定义后缀、有效期控制、访问密码与地域限制等。
+          </p>
+          <p>
+            在链接分析方向，点击统计、来源追踪、设备分布与实时看板是运营人员最常用的功能。智能路由则支持按设备、地域、时段将同一短链指向不同目标地址，适合 A/B 测试与精准投放。内容分发模块帮助运营者将短链嵌入落地页、邮件模板与社交卡片，形成从曝光到点击的完整链路。
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. 精选内容推荐 -->
+      <section class="section-card" id="featured">
+        <div class="section-header">
+          <h2>精选短链工具与功能</h2>
+          <a href="/#categories" class="more-link">全部分类 →</a>
+        </div>
+        <div class="card-grid">
+          <article class="content-card">
+            <h3 class="card-title">批量短链生成器</h3>
+            <div class="card-tags">
+              <span class="tag">批量生成</span>
+              <span class="tag accent">API</span>
+              <span class="tag success">免费额度</span>
+            </div>
+            <p class="card-desc">支持 Excel 导入与 API 批量创建，单次最多生成 500 条短链，自动去重并返回可下载的 CSV 结果文件。</p>
+            <div class="card-meta"><span>⭐ 4.8</span><span>2.3 万次使用</span><span>今天更新</span></div>
+          </article>
+
+          <article class="content-card">
+            <h3 class="card-title">实时点击分析看板</h3>
+            <div class="card-tags">
+              <span class="tag">点击统计</span>
+              <span class="tag accent">实时</span>
+              <span class="tag">设备分布</span>
+            </div>
+            <p class="card-desc">按分钟级刷新点击数据，展示来源渠道、设备类型、操作系统与地域分布，支持导出日报与周报。</p>
+            <div class="card-meta"><span>⭐ 4.7</span><span>1.8 万次查看</span><span>昨天更新</span></div>
+          </article>
+
+          <article class="content-card">
+            <h3 class="card-title">智能路由规则引擎</h3>
+            <div class="card-tags">
+              <span class="tag">智能路由</span>
+              <span class="tag accent">A/B 测试</span>
+              <span class="tag">地域定向</span>
+            </div>
+            <p class="card-desc">按设备、地域与时段设置跳转规则，同一短链可分配最多 8 个目标地址，支持权重分流与灰度发布。</p>
+            <div class="card-meta"><span>⭐ 4.6</span><span>9600 次配置</span><span>11 月 6 日</span></div>
+          </article>
+
+          <article class="content-card">
+            <h3 class="card-title">短链安全检测</h3>
+            <div class="card-tags">
+              <span class="tag">安全检测</span>
+              <span class="tag accent">风险拦截</span>
+              <span class="tag success">实时防护</span>
+            </div>
+            <p class="card-desc">对目标网址进行恶意软件、钓鱼与黑名单检测，命中风险时自动拦截并通知创建者，保障点击安全。</p>
+            <div class="card-meta"><span>⭐ 4.5</span><span>7200 次检测</span><span>11 月 5 日</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3. 最新更新 -->
+      <section class="section-card" id="latest">
+        <div class="section-header">
+          <h2>最新更新与动态</h2>
+        </div>
+        <ul class="update-list">
+          <li><span class="update-time">今天 09:30</span><span class="update-name">短链 API v3.2</span><span class="update-summary">新增 4 个地域路由参数与点击回调重试机制</span></li>
+          <li><span class="update-time">今天 08:15</span><span class="update-name">分析看板</span><span class="update-summary">新增「来源渠道」维度筛选与自定义时间对比</span></li>
+          <li><span class="update-time">昨天 21:10</span><span class="update-name">批量生成器</span><span class="update-summary">单次上限从 300 条提升至 500 条，支持断点续传</span></li>
+          <li><span class="update-time">昨天 16:40</span><span class="update-name">安全检测规则库</span><span class="update-summary">更新 230 条恶意域名特征，拦截准确率提升至 99.1%</span></li>
+          <li><span class="update-time">11 月 6 日</span><span class="update-name">智能路由模板</span><span class="update-summary">新增「双十一大促」预设模板，含移动端优先与地域分流</span></li>
+          <li><span class="update-time">11 月 5 日</span><span class="update-name">开发者文档</span><span class="update-summary">补充 Python 与 Node.js SDK 示例及错误码对照表</span></li>
+          <li><span class="update-time">11 月 3 日</span><span class="update-name">二维码生成</span><span class="update-summary">支持自定义 Logo 嵌入与容错等级调节</span></li>
+          <li><span class="update-time">11 月 1 日</span><span class="update-name">团队协作</span><span class="update-summary">新增成员角色权限与操作日志审计功能</span></li>
+        </ul>
+      </section>
+
+      <!-- 4. 分类入口 -->
+      <section class="section-card" id="categories">
+        <div class="section-header">
+          <h2>功能分类入口</h2>
+        </div>
+        <div class="category-grid">
+          <a href="/#featured" class="category-item"><span class="cat-icon">🔗</span>短链生成</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">📊</span>链接分析</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">⚙️</span>API 接入</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">🧭</span>智能路由</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">📦</span>批量管理</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">🛡️</span>安全检测</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">📤</span>内容分发</a>
+          <a href="/#featured" class="category-item"><span class="cat-icon">📈</span>数据看板</a>
+        </div>
+      </section>
+
+      <!-- 5. 深度解析正文 -->
+      <section class="section-card deep-dive" id="deep-dive">
+        <div class="section-header">
+          <h2>短链工具选型与链接策略深度解析</h2>
+        </div>
+        <h3>短链服务的三种技术路线</h3>
+        <p>
+          当前短链服务主要分为自托管、SaaS 平台与 API 优先三类。自托管方案如 Shlink 与 YOURLS 适合有服务器运维能力的团队，数据完全自主可控；SaaS 平台提供开箱即用的管理后台与分析看板，适合营销团队快速上手；API 优先的服务则将核心能力封装为接口，便于嵌入自有系统与工作流。
+        </p>
+        <p>
+          91.short.com 属于 API 优先与 SaaS 结合的类型，既提供可视化操作界面，也开放完整的 REST API。对于需要将短链能力集成到 CRM 或营销自动化平台的团队，API 的稳定性与文档质量比界面美观度更值得关注。
+        </p>
+
+        <h3>链接分析的核心指标</h3>
+        <p>
+          评估短链效果时，点击量只是起点。以下指标更能反映真实分发质量：
+        </p>
+        <ul>
+          <li><strong>独立点击率</strong>：去重后的点击人数占比，排除重复刷新带来的虚高。</li>
+          <li><strong>跳出率</strong>：点击短链后未进行任何操作即离开的比例，反映落地页匹配度。</li>
+          <li><strong>设备分布</strong>：移动端与桌面端的点击比例，决定落地页的响应式优先级。</li>
+          <li><strong>地域热力</strong>：点击来源的城市与区域分布，指导地域定向投放策略。</li>
+          <li><strong>时间衰减曲线</strong>：链接发布后 24 小时、72 小时与 7 天的点击衰减速度。</li>
+        </ul>
+
+        <h3>智能路由的适用场景</h3>
+        <p>
+          智能路由并非所有场景都需要。以下三类场景收益最明显：一是应用下载页，按 iOS 与 Android 自动跳转对应商店；二是地域合规，不同国家或地区展示符合当地法规的落地页；三是 A/B 测试，同一短链按权重分流到两个版本页面，通过点击与转化数据判断优劣。
+        </p>
+        <p>
+          配置路由规则时，建议保持规则数量不超过 5 条，每条规则的目标地址经过安全检测，并设置默认兜底地址。规则过多会导致排查困难，增加维护成本。
+        </p>
+
+        <h3>短链安全与品牌保护</h3>
+        <p>
+          短链因隐藏目标地址的特性，容易被用于钓鱼与垃圾信息传播。选择短链服务时应确认其具备恶意网址检测、点击频率限制与滥用举报机制。自定义域名是品牌保护的重要手段，使用自有域名作为短链前缀既能提升点击信任度，也能在服务商变更时保持链接可控。
+        </p>
+      </section>
+
+      <!-- 6. 体验指南 -->
+      <section class="section-card" id="guide">
+        <div class="section-header">
+          <h2>短链工具体验路径</h2>
+        </div>
+        <ol class="steps-list">
+          <li>
+            <div class="step-content">
+              <strong>从批量生成开始</strong>
+              <span>先用批量生成器导入 10 条测试链接，熟悉自定义后缀、有效期与密码保护等基础选项，观察生成结果的结构。</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>接入分析看板</strong>
+              <span>将生成的短链投放到一个测试渠道，观察 24 小时内的点击趋势、设备分布与来源构成，判断数据是否符合预期。</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>尝试智能路由</strong>
+              <span>选择一个需要区分移动端与桌面端的落地页，配置两条路由规则，验证跳转准确性与加载速度。</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>开启安全检测</strong>
+              <span>对目标网址启用安全检测，确认正常链接不被误拦，同时测试恶意链接能否被正确拦截。</span>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <strong>评估 API 接入</strong>
+              <span>如有自有系统，阅读 API 文档并调用创建短链接口，关注响应时间、错误码与限流策略。</span>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 7. FAQ -->
+      <section class="section-card" id="faq">
+        <div class="section-header">
+          <h2>短链使用常见问题</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>短链的点击数据一般多久更新一次？</summary>
+            <div class="faq-answer">实时看板的点击数据通常按分钟级刷新，聚合报表按小时或天维度更新。如果发现数据延迟，可先检查链接是否被浏览器缓存或广告拦截插件影响。</div>
+          </details>
+          <details class="faq-item">
+            <summary>智能路由和普通跳转有什么区别？</summary>
+            <div class="faq-answer">普通跳转始终指向同一个目标地址；智能路由根据访问者的设备、地域或时段动态选择目标地址，适合需要差异化承载的场景，比如 iOS 与 Android 跳转不同应用商店。</div>
+          </details>
+          <details class="faq-item">
+            <summary>第一次使用短链服务应该从哪个功能开始？</summary>
+            <div class="faq-answer">建议从批量生成器入手，创建 5 到 10 条测试短链并投放到一个可追踪的渠道，先熟悉创建流程与基础数据反馈，再逐步尝试路由与安全检测。</div>
+          </details>
+          <details class="faq-item">
+            <summary>自定义短链后缀有什么限制？</summary>
+            <div class="faq-answer">后缀通常限制在 3 到 16 个字符之间，只允许字母、数字和连字符，且不能与系统保留字冲突。部分平台对后缀修改收取额外费用，创建前需确认规则。</div>
+          </details>
+          <details class="faq-item">
+            <summary>短链的有效期可以设置多久？</summary>
+            <div class="faq-answer">有效期可从 1 小时到永久不等，具体取决于服务商策略。批量生成时建议为营销活动链接设置明确的过期时间，避免活动结束后仍被访问。</div>
+          </details>
+          <details class="faq-item">
+            <summary>如何判断一个短链是否安全？</summary>
+            <div class="faq-answer">优先选择提供安全检测的服务商，创建前查看目标域名是否在恶意网址库中。点击来源不明的短链前，可通过短链预览功能查看真实目标地址。</div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 8. 用户评论 -->
+      <section class="section-card" id="comments">
+        <div class="section-header">
+          <h2>用户使用反馈</h2>
+        </div>
+        <div class="comment-list">
+          <div class="comment-item">
+            <div class="comment-avatar">L</div>
+            <div class="comment-body">
+              <span class="comment-nick">林间开发者</span>
+              <p class="comment-text">API 文档写得比较清楚，Python SDK 示例直接能跑通，批量生成 200 条大概用了 12 秒。</p>
+              <span class="comment-date">2026-11-08 10:22</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">Z</div>
+            <div class="comment-body">
+              <span class="comment-nick">张运营</span>
+              <p class="comment-text">智能路由的 A/B 测试功能好用，同一短链分两个落地页，三天就看出转化差异了。</p>
+              <span class="comment-date">2026-11-08 09:05</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">C</div>
+            <div class="comment-body">
+              <span class="comment-nick">陈小满</span>
+              <p class="comment-text">分析看板的数据维度挺全，设备分布和地域热力都有，导出的 CSV 可以直接进 BI 跑。</p>
+              <span class="comment-date">2026-11-07 22:48</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">W</div>
+            <div class="comment-body">
+              <span class="comment-nick">王安全</span>
+              <p class="comment-text">安全检测拦下过一条钓鱼链接，提示很明确，不过误报也遇到过一次，加了白名单后正常。</p>
+              <span class="comment-date">2026-11-07 18:30</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">H</div>
+            <div class="comment-body">
+              <span class="comment-nick">何同学</span>
+              <p class="comment-text">免费额度对个人项目够用，但批量上限如果能到 1000 条就更好了。</p>
+              <span class="comment-date">2026-11-07 14:12</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">M</div>
+            <div class="comment-body">
+              <span class="comment-nick">马可婷</span>
+              <p class="comment-text">二维码自定义 Logo 那个功能今天刚用，嵌入后扫码识别率没受影响，效果不错。</p>
+              <span class="comment-date">2026-11-06 16:55</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">D</div>
+            <div class="comment-body">
+              <span class="comment-nick">邓不利多</span>
+              <p class="comment-text">团队协作的权限分级合理，编辑只能看自己创建的链接，管理员可以全局导出。</p>
+              <span class="comment-date">2026-11-06 11:20</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">S</div>
+            <div class="comment-body">
+              <span class="comment-nick">苏打水</span>
+              <p class="comment-text">点击统计的实时刷新有几十秒延迟，做直播活动时稍微有点跟不上节奏。</p>
+              <span class="comment-date">2026-11-05 20:45</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">Y</div>
+            <div class="comment-body">
+              <span class="comment-nick">杨帆启航</span>
+              <p class="comment-text">自定义域名配置需要加两条 DNS 记录，文档里有截图，照着做十分钟搞定。</p>
+              <span class="comment-date">2026-11-05 15:33</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">T</div>
+            <div class="comment-body">
+              <span class="comment-nick">唐小糖</span>
+              <p class="comment-text">有效期设置很灵活，给促销活动设了 72 小时自动过期，省得手动清理。</p>
+              <span class="comment-date">2026-11-04 21:10</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">G</div>
+            <div class="comment-body">
+              <span class="comment-nick">郭靖</span>
+              <p class="comment-text">API 的限流策略是每分钟 120 次，对中小项目够用，大批量任务需要排队。</p>
+              <span class="comment-date">2026-11-04 13:48</span>
+            </div>
+          </div>
+          <div class="comment-item">
+            <div class="comment-avatar">N</div>
+            <div class="comment-body">
+              <span class="comment-nick">南宫问天</span>
+              <p class="comment-text">希望后续能加上链接分组标签，现在链接多了管理起来有点乱。</p>
+              <span class="comment-date">2026-11-03 19:25</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. 相关资讯 -->
+      <section class="section-card" id="news">
+        <div class="section-header">
+          <h2>短链与内容分发相关资讯</h2>
+        </div>
+        <div class="news-list">
+          <div class="news-item">
+            <span class="news-date">2026-11-08</span>
+            <div class="news-content">
+              <div class="news-title">短链 API v3.2 发布：新增地域路由与回调重试</div>
+              <div class="news-summary">本次更新增加 4 个地域路由参数，点击回调支持最多 3 次自动重试，减少数据丢失。</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026-11-06</span>
+            <div class="news-content">
+              <div class="news-title">智能路由模板新增「双十一大促」预设</div>
+              <div class="news-summary">模板包含移动端优先跳转、地域分流与限时降级规则，可一键应用到现有短链。</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026-11-04</span>
+            <div class="news-content">
+              <div class="news-title">安全检测规则库更新 230 条恶意域名特征</div>
+              <div class="news-summary">本轮更新重点覆盖仿冒电商与虚假客服页面，拦截准确率提升至 99.1%。</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026-11-02</span>
+            <div class="news-content">
+              <div class="news-title">二维码生成支持自定义 Logo 与容错等级</div>
+              <div class="news-summary">用户可上传品牌 Logo 嵌入二维码中心，容错等级支持 L/M/Q/H 四档调节。</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026-10-30</span>
+            <div class="news-content">
+              <div class="news-title">团队协作上线成员角色与操作日志审计</div>
+              <div class="news-summary">新增管理员、编辑、只读三种角色，所有短链创建与修改操作记录可追溯。</div>
+            </div>
+          </div>
+          <div class="news-item">
+            <span class="news-date">2026-10-26</span>
+            <div class="news-content">
+              <div class="news-title">开发者文档补充 Python 与 Node.js SDK 示例</div>
+              <div class="news-summary">新增两个语言的快速接入指南与错误码对照表，降低 API 集成门槛。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. 相关推荐 -->
+      <section class="section-card" id="related">
+        <div class="section-header">
+          <h2>相关推荐方向</h2>
+        </div>
+        <div class="tag-index">
+          <a href="/#featured">Shlink 自托管方案对比</a>
+          <a href="/#featured">YOURLS 插件生态</a>
+          <a href="/#featured">短链域名防封策略</a>
+          <a href="/#featured">UTM 参数与短链结合</a>
+          <a href="/#featured">二维码扫描统计</a>
+          <a href="/#featured">邮件营销短链追踪</a>
+          <a href="/#featured">短信短链长度限制</a>
+          <a href="/#featured">短链点击率提升方法</a>
+        </div>
+      </section>
+
+      <!-- 11. 热门榜单 -->
+      <section class="section-card" id="hot-rank">
+        <div class="section-header">
+          <h2>本周短链工具使用热度榜</h2>
+        </div>
+        <ol class="hot-rank-list">
+          <li><span class="rank-name">批量短链生成器</span><span class="rank-desc">本周创建 8,420 条 · 环比 +18%</span></li>
+          <li><span class="rank-name">实时点击分析看板</span><span class="rank-desc">本周查看 6,150 次 · 环比 +12%</span></li>
+          <li><span class="rank-name">智能路由规则引擎</span><span class="rank-desc">本周配置 3,780 条规则 · 环比 +9%</span></li>
+          <li><span class="rank-name">短链安全检测</span><span class="rank-desc">本周检测 5,230 次 · 拦截 47 次</span></li>
+          <li><span class="rank-name">二维码生成器</span><span class="rank-desc">本周生成 2,910 张 · 环比 +6%</span></li>
+        </ol>
+      </section>
+
+    </main>
+
+    <!-- 右辅助栏 -->
+    <aside class="right-sidebar" aria-label="辅助信息">
+      <div class="sidebar-card">
+        <h3>今日更新速览</h3>
+        <ul class="update-stream">
+          <li><strong>API v3.2</strong> 新增地域路由参数 <span class="time">09:30</span></li>
+          <li><strong>分析看板</strong> 来源渠道维度筛选 <span class="time">08:15</span></li>
+          <li><strong>安全规则</strong> 更新 230 条特征 <span class="time">昨天 16:40</span></li>
+          <li><strong>批量生成</strong> 上限提至 500 条 <span class="time">昨天 21:10</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-card">
+        <h3>短链使用小贴士</h3>
+        <ul class="update-stream">
+          <li>为营销链接设置明确的有效期，避免活动结束后仍可访问。</li>
+          <li>自定义域名可提升点击信任度，建议提前完成 DNS 配置。</li>
+          <li>A/B 测试路由规则建议不超过 3 条，便于数据归因。</li>
+          <li>批量生成前先导入 5 条测试数据，确认格式无误再全量执行。</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- 页尾 -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name">91.short.com</span>
+        <p>AI 驱动的智能短链接与内容分发枢纽，提供短链生成、链接分析、智能路由与安全检测工具。</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>核心功能</h4>
+          <ul>
+            <li><a href="/#featured">短链生成</a></li>
+            <li><a href="/#featured">批量管理</a></li>
+            <li><a href="/#featured">智能路由</a></li>
+            <li><a href="/#featured">安全检测</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>数据分析</h4>
+          <ul>
+            <li><a href="/#featured">点击统计</a></li>
+            <li><a href="/#featured">来源追踪</a></li>
+            <li><a href="/#featured">设备分布</a></li>
+            <li><a href="/#featured">实时看板</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>开发者</h4>
+          <ul>
+            <li><a href="/#featured">API 文档</a></li>
+            <li><a href="/#featured">SDK 下载</a></li>
+            <li><a href="/#faq">常见问题</a></li>
+            <li><a href="/#news">更新日志</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 91.short.com 内容聚合示例页面</span>
+      <span>部分内容为示例数据，仅用于展示页面结构</span>
+    </div>
+  </footer>
+
+</body>
+  </html>
