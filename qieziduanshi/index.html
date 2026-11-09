@@ -1,0 +1,1824 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>茄子短视频官网 - 热门短视频内容聚合</title>
+  <meta name="description" content="茄子短视频官网汇集搞笑、美食、旅行、影视剪辑、萌宠、知识科普等热门短视频内容，提供分类浏览与精选推荐，适合短视频爱好者发现每日新鲜看点。">
+  <meta name="keywords" content="短视频平台, 搞笑视频, 美食教程, 旅行vlog, 影视解说, 萌宠日常">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%237b2d8e'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23f5e6a3' font-family='sans-serif' font-weight='bold'%3E茄%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --brand-primary: #7b2d8e;
+      --brand-primary-dark: #5a1d69;
+      --brand-accent: #f5e6a3;
+      --brand-accent-dark: #d4b94a;
+      --bg-page: #faf8f5;
+      --bg-panel: #ffffff;
+      --bg-alt: #f3eff8;
+      --text-main: #1a1225;
+      --text-secondary: #4a3b5c;
+      --text-muted: #7a6b8a;
+      --border-light: #e8e0f0;
+      --border-medium: #d4c8e0;
+      --shadow-sm: 0 1px 3px rgba(26, 18, 37, 0.06);
+      --shadow-md: 0 4px 12px rgba(26, 18, 37, 0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      --sticky-height: 108px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--sticky-height);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 吸顶公告条 + 页头 */
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .announce-bar {
+      background: var(--brand-primary-dark);
+      color: var(--brand-accent);
+      font-size: 13px;
+      padding: 8px 0;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .announce-bar strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .site-header {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 64px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--brand-primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-accent);
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .main-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      background: var(--bg-alt);
+      color: var(--brand-primary);
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
+    }
+
+    .header-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 8px;
+    }
+
+    .header-search input {
+      padding: 7px 14px;
+      border: 1px solid var(--border-medium);
+      border-radius: 20px;
+      font-size: 13px;
+      width: 200px;
+      background: var(--bg-page);
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .header-search input:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(123, 45, 142, 0.12);
+    }
+
+    .header-search button {
+      padding: 7px 16px;
+      background: var(--brand-primary);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .header-search button:hover {
+      background: var(--brand-primary-dark);
+    }
+
+    .header-search button:focus-visible {
+      outline: 2px solid var(--brand-accent);
+      outline-offset: 2px;
+    }
+
+    /* 三栏门户布局 */
+    .page-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 180px 1fr 250px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* 左频道索引 */
+    .channel-sidebar {
+      position: sticky;
+      top: var(--sticky-height);
+      background: var(--bg-panel);
+      border-radius: var(--radius-md);
+      padding: 16px 0;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+    }
+
+    .channel-sidebar h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0 16px 8px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 6px;
+    }
+
+    .channel-sidebar ul {
+      list-style: none;
+    }
+
+    .channel-sidebar li a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .channel-sidebar li a:hover,
+    .channel-sidebar li a:focus-visible {
+      background: var(--bg-alt);
+      color: var(--brand-primary);
+      border-left-color: var(--brand-primary);
+      outline: none;
+    }
+
+    .channel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    /* 主内容区 */
+    .main-content {
+      min-width: 0;
+    }
+
+    /* 首屏 */
+    .hero-section {
+      background: linear-gradient(135deg, var(--brand-primary-dark) 0%, var(--brand-primary) 60%, #9b4dab 100%);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(245, 230, 163, 0.1);
+      pointer-events: none;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      right: 40px;
+      bottom: -80px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(245, 230, 163, 0.06);
+      pointer-events: none;
+    }
+
+    .hero-title-group {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245, 230, 163, 0.2);
+      color: var(--brand-accent);
+      font-size: 12px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-section h1 {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions a {
+      display: inline-block;
+      padding: 9px 22px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--brand-accent);
+      color: var(--brand-primary-dark);
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* 通用板块 */
+    .section-block {
+      background: var(--bg-panel);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-block h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-block h2::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      background: var(--brand-primary);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .section-intro {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    /* 概览段落 */
+    .overview-text {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .overview-text p {
+      margin-bottom: 12px;
+    }
+
+    .overview-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 精选卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .content-card {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--bg-panel);
+      transition: box-shadow 0.2s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+      background: var(--bg-alt);
+    }
+
+    .card-body {
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 10px;
+      background: var(--bg-alt);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .tag-accent {
+      background: rgba(123, 45, 142, 0.1);
+      color: var(--brand-primary);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 8px;
+    }
+
+    .card-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .meta-hot {
+      color: #d9534f;
+      font-weight: 600;
+    }
+
+    /* 最新更新列表 */
+    .update-list {
+      list-style: none;
+    }
+
+    .update-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+    }
+
+    .update-list li:last-child {
+      border-bottom: none;
+    }
+
+    .update-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      min-width: 70px;
+    }
+
+    .update-name {
+      font-weight: 600;
+      color: var(--text-main);
+      flex-shrink: 0;
+    }
+
+    .update-summary {
+      color: var(--text-secondary);
+      font-size: 13.5px;
+    }
+
+    /* 分类入口 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .category-item {
+      display: block;
+      text-align: center;
+      padding: 16px 8px;
+      background: var(--bg-alt);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .category-item:hover,
+    .category-item:focus-visible {
+      background: rgba(123, 45, 142, 0.08);
+      color: var(--brand-primary);
+      border-color: rgba(123, 45, 142, 0.2);
+      outline: none;
+    }
+
+    .category-icon {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    /* 深度解析 */
+    .deep-dive {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .deep-dive h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 8px;
+    }
+
+    .deep-dive h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .deep-dive p {
+      margin-bottom: 10px;
+    }
+
+    .deep-dive ul {
+      margin: 8px 0 12px 20px;
+      font-size: 14px;
+    }
+
+    .deep-dive li {
+      margin-bottom: 6px;
+    }
+
+    /* 体验指南 - 编号步骤 */
+    .guide-steps {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .guide-steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 10px 0 10px 44px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .guide-steps li:last-child {
+      border-bottom: none;
+    }
+
+    .guide-steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 28px;
+      height: 28px;
+      background: var(--brand-primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .guide-steps strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14.5px;
+    }
+
+    /* FAQ */
+    .faq-list details {
+      border-bottom: 1px solid var(--border-light);
+      padding: 4px 0;
+    }
+
+    .faq-list details:last-child {
+      border-bottom: none;
+    }
+
+    .faq-list summary {
+      cursor: pointer;
+      padding: 10px 0;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.15s;
+    }
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-list summary::before {
+      content: '+';
+      font-size: 16px;
+      color: var(--brand-primary);
+      font-weight: 700;
+      width: 18px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .faq-list details[open] summary::before {
+      content: '−';
+    }
+
+    .faq-list summary:hover {
+      color: var(--brand-primary);
+    }
+
+    .faq-list summary:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    .faq-answer {
+      padding: 0 0 12px 26px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* 用户评论 */
+    .comment-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .comment-item {
+      background: var(--bg-alt);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .comment-user {
+      font-weight: 600;
+      color: var(--brand-primary);
+      font-size: 12.5px;
+      margin-bottom: 4px;
+    }
+
+    /* 相关资讯 */
+    .news-list {
+      list-style: none;
+    }
+
+    .news-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-img {
+      width: 100px;
+      height: 68px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--bg-alt);
+    }
+
+    .news-content {
+      min-width: 0;
+    }
+
+    .news-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+
+    .news-date {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .news-summary {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* 相关推荐标签索引 */
+    .recommend-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .recommend-tags a {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--bg-alt);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .recommend-tags a:hover,
+    .recommend-tags a:focus-visible {
+      background: rgba(123, 45, 142, 0.08);
+      color: var(--brand-primary);
+      border-color: rgba(123, 45, 142, 0.2);
+      outline: none;
+    }
+
+    /* 热门榜单 */
+    .rank-list {
+      list-style: none;
+      counter-reset: rank;
+    }
+
+    .rank-list li {
+      counter-increment: rank;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+    }
+
+    .rank-list li:last-child {
+      border-bottom: none;
+    }
+
+    .rank-list li::before {
+      content: counter(rank);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .rank-list li:nth-child(1)::before {
+      background: var(--brand-primary);
+      color: #fff;
+    }
+
+    .rank-list li:nth-child(2)::before {
+      background: var(--brand-primary);
+      color: #fff;
+      opacity: 0.75;
+    }
+
+    .rank-list li:nth-child(3)::before {
+      background: var(--brand-primary);
+      color: #fff;
+      opacity: 0.55;
+    }
+
+    .rank-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .rank-score {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* 右侧辅助栏 */
+    .sidebar-right {
+      position: sticky;
+      top: var(--sticky-height);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-card h3::before {
+      content: '';
+      width: 3px;
+      height: 14px;
+      background: var(--brand-accent-dark);
+      border-radius: 2px;
+    }
+
+    .hot-list {
+      list-style: none;
+    }
+
+    .hot-list li {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hot-list li:last-child {
+      border-bottom: none;
+    }
+
+    .hot-index {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      width: 18px;
+      flex-shrink: 0;
+    }
+
+    .hot-list li:nth-child(-n+3) .hot-index {
+      color: var(--brand-primary);
+    }
+
+    .hot-name {
+      color: var(--text-secondary);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hot-tag {
+      font-size: 10px;
+      padding: 0 6px;
+      border-radius: 8px;
+      background: rgba(123, 45, 142, 0.08);
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .update-stream li {
+      padding: 6px 0;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      border-bottom: 1px dashed var(--border-light);
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+    }
+
+    .update-stream li:last-child {
+      border-bottom: none;
+    }
+
+    .stream-time {
+      color: var(--text-muted);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* 页尾 */
+    .site-footer {
+      background: #1a1225;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 40px 0 24px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+
+    .footer-brand {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .footer-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 5px;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-size: 12.5px;
+      transition: color 0.15s;
+    }
+
+    .footer-col a:hover,
+    .footer-col a:focus-visible {
+      color: var(--brand-accent);
+      outline: none;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 16px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.35);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* 无结果提示 */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .no-results.visible {
+      display: block;
+    }
+
+    /* 响应式 */
+    @media (max-width: 1100px) {
+      .page-container {
+        grid-template-columns: 160px 1fr;
+      }
+
+      .sidebar-right {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .page-container {
+        grid-template-columns: 1fr;
+      }
+
+      .channel-sidebar {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 10px;
+      }
+
+      .channel-sidebar h2 {
+        width: 100%;
+        border-bottom: none;
+        padding-bottom: 4px;
+      }
+
+      .channel-sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .channel-sidebar li a {
+        padding: 5px 12px;
+        border-radius: 16px;
+        border-left: none;
+        background: var(--bg-alt);
+      }
+
+      .channel-sidebar li a:hover {
+        border-left-color: transparent;
+      }
+
+      .channel-dot {
+        display: none;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .comment-list {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .header-search input {
+        width: 140px;
+      }
+
+      .main-nav {
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 740px) {
+      .header-inner {
+        padding: 0 12px;
+        gap: 12px;
+        flex-wrap: wrap;
+        height: auto;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .header-search {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .header-search input {
+        flex: 1;
+        width: auto;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .hero-section {
+        padding: 28px 20px;
+      }
+
+      .hero-section h1 {
+        font-size: 26px;
+      }
+
+      .page-container {
+        padding: 12px;
+      }
+
+      .section-block {
+        padding: 16px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .news-img {
+        width: 80px;
+        height: 56px;
+      }
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+  <!-- 吸顶公告条 + 页头 -->
+  <div class="sticky-top">
+    <div class="announce-bar">
+      🍆 本周新增 <strong>26 条</strong> 搞笑短视频 · 美食教程「深夜厨房」系列更新至第 12 期 · 旅行 Vlog「川西环线」全集上线
+    </div>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/#hero" class="logo-area" aria-label="茄子短视频官网首页">
+          <span class="logo-icon" aria-hidden="true">茄</span>
+          <span class="logo-text">茄子短视频官网</span>
+        </a>
+        <nav class="main-nav" aria-label="主题导航">
+          <a href="/#featured">精选推荐</a>
+          <a href="/#latest-updates">最新更新</a>
+          <a href="/#categories">分类入口</a>
+          <a href="/#deep-dive">深度解析</a>
+          <a href="/#faq">常见问答</a>
+        </nav>
+        <div class="header-search">
+          <input type="search" id="searchInput" placeholder="搜索短视频内容…" aria-label="搜索短视频内容">
+          <button type="button" id="searchBtn">搜索</button>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- 页面主体：三栏门户布局 -->
+  <div class="page-container">
+
+    <!-- 左侧频道索引 -->
+    <aside class="channel-sidebar" aria-label="频道索引">
+      <h2>内容频道</h2>
+      <ul>
+        <li><a href="/#featured"><span class="channel-dot"></span>搞笑短剧</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>美食教程</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>旅行 Vlog</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>影视剪辑</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>萌宠日常</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>知识科普</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>健身跟练</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>手工 DIY</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>数码评测</a></li>
+        <li><a href="/#featured"><span class="channel-dot"></span>音乐现场</a></li>
+      </ul>
+    </aside>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+
+      <!-- 首屏 -->
+      <section class="hero-section" id="hero" aria-labelledby="hero-title">
+        <div class="hero-title-group">
+          <span class="hero-badge">每日更新 · 精选短视频聚合</span>
+          <h1 id="hero-title">茄子短视频官网</h1>
+          <p class="hero-desc">
+            汇聚搞笑短剧、美食教程、旅行 Vlog、影视剪辑、萌宠日常、知识科普等热门短视频内容，按类型分类浏览，发现每日新鲜看点与高热度创作者作品。
+          </p>
+          <div class="hero-actions">
+            <a href="/#featured" class="btn-primary">浏览精选内容</a>
+            <a href="/#latest-updates" class="btn-ghost">查看最新更新</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 板块1：主题领域概览 -->
+      <section class="section-block" id="overview" aria-labelledby="overview-title">
+        <h2 id="overview-title">短视频内容领域概览</h2>
+        <div class="overview-text">
+          <p>
+            茄子短视频官网所聚合的短视频内容，覆盖生活娱乐与知识获取两大方向。当前主流短视频类型包括搞笑短剧、美食教程、旅行 Vlog、影视剪辑解说、萌宠日常、健身跟练、手工 DIY、数码评测和音乐现场等。每种类型有各自的更新节奏与观看场景：搞笑短剧适合碎片时间放松，美食教程偏重步骤可操作性，旅行 Vlog 强调画面与路线记录。
+          </p>
+          <p>
+            从内容消费角度看，短视频的评判维度通常包括信息密度、画面质感、节奏把控和实用性。美食教程关注步骤是否清晰、食材是否易得；影视剪辑关注解说逻辑与素材选取；知识科普关注信息准确性与表达通俗度。不同类型之间没有统一标准，但同一类型内可以通过完播率、互动量和收藏数判断受欢迎程度。
+          </p>
+          <p>
+            茄子短视频官网整理的条目覆盖上述主要类型，每条内容标注类型标签、看点摘要和热度参考。当前值得关注的方向包括：短剧类向精品化发展，美食教程向场景化操作演进，旅行 Vlog 向深度路线记录延伸。这些变化直接影响观众选择什么类型、投入多少时间。
+          </p>
+        </div>
+      </section>
+
+      <!-- 板块2：精选内容推荐 -->
+      <section class="section-block" id="featured" aria-labelledby="featured-title">
+        <h2 id="featured-title">精选内容推荐</h2>
+        <p class="section-intro">按类型筛选当下值得投入时间的短视频条目，涵盖搞笑、美食、旅行、影视、萌宠与知识科普。</p>
+        <div class="card-grid" id="featuredGrid">
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-gaoxiao01/400/300" alt="搞笑短剧《合租室友的奇葩日常》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">合租室友的奇葩日常 第 3 季</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">搞笑短剧</span>
+                <span class="tag">情景喜剧</span>
+                <span class="tag">合租题材</span>
+              </div>
+              <p class="card-desc">每集 3 分钟，围绕合租生活中的水电费分摊、抢厕所、深夜外卖等真实场景展开，台词密度高，反转集中在结尾 15 秒。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 98.2 万</span><span>更新至第 18 集</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-meishi02/400/300" alt="美食教程《深夜厨房：一人食拉面》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">深夜厨房：一人食拉面</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">美食教程</span>
+                <span class="tag">一人食</span>
+                <span class="tag">快手菜</span>
+              </div>
+              <p class="card-desc">从熬汤底到煮面共 12 分钟，重点演示如何用超市常见调料复刻日式豚骨风味，附食材替代方案与时间分配表。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 76.5 万</span><span>11 月 6 日更新</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-lvxing03/400/300" alt="旅行Vlog《川西环线自驾全记录》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">川西环线自驾全记录</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">旅行 Vlog</span>
+                <span class="tag">自驾路线</span>
+                <span class="tag">高原风光</span>
+              </div>
+              <p class="card-desc">六天五夜路线实录，涵盖折多山、新都桥、稻城亚丁节点，标注每日行车时长、海拔变化和住宿选择，适合首次进川西的观众参考。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 89.1 万</span><span>全集已上线</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-yingshi04/400/300" alt="影视剪辑《消失的客人》深度解说封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">《消失的客人》深度解说</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">影视剪辑</span>
+                <span class="tag">悬疑解说</span>
+                <span class="tag">反转拆解</span>
+              </div>
+              <p class="card-desc">22 分钟完整拆解西班牙悬疑片的多重反转结构，按时间线梳理证词矛盾点，适合看过原片后想复盘细节的观众。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 102.3 万</span><span>11 月 4 日更新</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-mengchong05/400/300" alt="萌宠日常《橘猫年糕的减肥计划》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">橘猫年糕的减肥计划</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">萌宠日常</span>
+                <span class="tag">猫咪减肥</span>
+                <span class="tag">日常记录</span>
+              </div>
+              <p class="card-desc">记录一只 8.5 公斤橘猫在兽医建议下的 90 天减重过程，包含饮食调整、互动玩具和体重曲线，每期附当日热量摄入。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 67.8 万</span><span>更新至第 42 天</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-zhishi06/400/300" alt="知识科普《为什么飞机窗户是圆角》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">为什么飞机窗户是圆角</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">知识科普</span>
+                <span class="tag">航空原理</span>
+                <span class="tag">工程安全</span>
+              </div>
+              <p class="card-desc">从金属疲劳与应力集中角度解释圆角设计起源，结合 1950 年代彗星客机事故案例，5 分钟讲清方形舷窗为什么被淘汰。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 55.4 万</span><span>11 月 2 日更新</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-jianshen07/400/300" alt="健身跟练《15分钟燃脂HIIT》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">15 分钟燃脂 HIIT 跟练</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">健身跟练</span>
+                <span class="tag">HIIT</span>
+                <span class="tag">无器械</span>
+              </div>
+              <p class="card-desc">零器械居家方案，四个动作循环三轮，每个动作配低冲击替代版，适合膝盖敏感人群，全程有倒计时和动作要领提示。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 61.2 万</span><span>11 月 5 日更新</span></div>
+            </div>
+          </article>
+
+          <article class="content-card">
+            <img class="card-img" src="https://picsum.photos/seed/qiezi-shougong08/400/300" alt="手工DIY《旧牛仔裤改造成托特包》封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">旧牛仔裤改造成托特包</h3>
+              <div class="card-tags">
+                <span class="tag tag-accent">手工 DIY</span>
+                <span class="tag">旧物改造</span>
+                <span class="tag">缝纫入门</span>
+              </div>
+              <p class="card-desc">不需要缝纫机，手缝完成，重点讲解裤腿裁剪、内衬固定和提手加固三个关键步骤，成品可承重约 5 公斤。</p>
+              <div class="card-meta"><span class="meta-hot">🔥 热度 43.7 万</span><span>11 月 3 日更新</span></div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- 板块3：最新更新 -->
+      <section class="section-block" id="latest-updates" aria-labelledby="latest-title">
+        <h2 id="latest-title">最新更新与热播动态</h2>
+        <p class="section-intro">以下条目为 2026 年 11 月 8 日当天及前 30 天内的更新记录。</p>
+        <ul class="update-list">
+          <li><span class="update-time">今天 09:30</span><span class="update-name">合租室友的奇葩日常</span><span class="update-summary">第 18 集「抢厕所大战」上线，结尾反转涉及合租协议新增条款。</span></li>
+          <li><span class="update-time">今天 08:15</span><span class="update-name">深夜厨房：一人食拉面</span><span class="update-summary">补充了昆布替代方案，更新汤底调配比例表。</span></li>
+          <li><span class="update-time">昨天 21:10</span><span class="update-name">川西环线自驾全记录</span><span class="update-summary">第六集「稻城亚丁徒步」上线，包含洛绒牛场到牛奶海耗时参考。</span></li>
+          <li><span class="update-time">昨天 18:40</span><span class="update-name">橘猫年糕的减肥计划</span><span class="update-summary">第 42 天记录更新，体重降至 7.1 公斤，附兽医复查建议。</span></li>
+          <li><span class="update-time">11 月 6 日</span><span class="update-name">《消失的客人》深度解说</span><span class="update-summary">新增「证词矛盾点速查表」章节，时长扩展至 28 分钟。</span></li>
+          <li><span class="update-time">11 月 5 日</span><span class="update-name">15 分钟燃脂 HIIT 跟练</span><span class="update-summary">上线「低冲击版」独立分集，针对膝关节不适人群。</span></li>
+          <li><span class="update-time">11 月 4 日</span><span class="update-name">为什么飞机窗户是圆角</span><span class="update-summary">补充彗星客机事故原始调查档案截图与应力分布图。</span></li>
+          <li><span class="update-time">11 月 3 日</span><span class="update-name">旧牛仔裤改造成托特包</span><span class="update-summary">发布成品尺寸图纸，标注各部件裁剪尺寸。</span></li>
+          <li><span class="update-time">11 月 2 日</span><span class="update-name">数码评测：千元耳机横评</span><span class="update-summary">新增三款 2026 年秋季新品，更新降噪实测数据。</span></li>
+          <li><span class="update-time">11 月 1 日</span><span class="update-name">音乐现场：爵士小酒馆</span><span class="update-summary">第 7 期「秋夜 Bossa Nova」上线，收录四首现场曲目。</span></li>
+        </ul>
+      </section>
+
+      <!-- 板块4：分类入口 -->
+      <section class="section-block" id="categories" aria-labelledby="categories-title">
+        <h2 id="categories-title">分类入口</h2>
+        <p class="section-intro">按类型定位内容频道，点击跳转对应分类区块。</p>
+        <div class="category-grid">
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">😂</span>搞笑短剧</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">🍜</span>美食教程</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">🏔️</span>旅行 Vlog</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">🎬</span>影视剪辑</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">🐱</span>萌宠日常</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">📖</span>知识科普</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">💪</span>健身跟练</a>
+          <a href="/#featured" class="category-item"><span class="category-icon" aria-hidden="true">🔧</span>手工 DIY</a>
+        </div>
+      </section>
+
+      <!-- 板块5：深度解析正文 -->
+      <section class="section-block" id="deep-dive" aria-labelledby="deepdive-title">
+        <h2 id="deepdive-title">不同类型短视频的观看选择与判断</h2>
+        <div class="deep-dive">
+          <h3>搞笑短剧：节奏与反转密度决定投入价值</h3>
+          <p>
+            搞笑短剧的核心判断指标是单位时间内的笑点密度和反转设计。以《合租室友的奇葩日常》为例，每集 3 分钟通常安排 4 到 6 个笑点，结尾 15 秒完成反转。观众选择这类内容时，可以优先看前 30 秒是否建立冲突，如果前 30 秒没有引入具体场景矛盾，后续节奏往往偏散。同类型条目比较时，关注编剧是否围绕单一场景展开，多线并进的短剧在 3 分钟体量内容易交代不清。
+          </p>
+          <h3>美食教程：步骤可操作性与食材可得性</h3>
+          <p>
+            美食教程的价值主要看两点：步骤是否精确到可复现，食材是否在普通超市能买到。《深夜厨房：一人食拉面》把汤底调配拆成四个阶段，每个阶段标注时间与火力，并给出昆布缺失时的替代方案。判断一个美食教程是否值得收藏，可以看它有没有标注分量、火候和替代食材。只展示成品和大致流程的教程，复现成功率通常较低。
+          </p>
+          <h3>旅行 Vlog：路线信息密度与画面记录平衡</h3>
+          <p>
+            旅行 Vlog 分为两类：一类偏攻略，标注行车时长、海拔、住宿和费用；一类偏氛围记录，强调画面与音乐。选择时先明确需求——如果是规划行程，优先看带有具体节点数据的 Vlog；如果是放松观看，氛围类更合适。《川西环线自驾全记录》属于前者，每天结尾附当日行车数据表，适合作为路线参考。对比同类内容时，注意 Vlog 拍摄季节与自身出行时间是否接近，高原路况在不同月份差异明显。
+          </p>
+          <h3>影视剪辑与知识科普：信息准确性的判断方法</h3>
+          <p>
+            影视解说和知识科普共享一个判断标准：信息是否可溯源。影视解说可以看是否标注原片时长和关键时间点，知识科普可以看是否给出案例出处。《为什么飞机窗户是圆角》引用了 1950 年代彗星客机事故调查档案，这类带具体出处的科普比泛泛而谈的内容更值得投入时间。影视解说方面，《消失的客人》解说按证词时间线拆解，方便对照原片复盘，属于结构清晰的类型。
+          </p>
+          <ul>
+            <li><strong>搞笑短剧</strong>：看前 30 秒冲突建立，反转是否集中在结尾。</li>
+            <li><strong>美食教程</strong>：看分量、火候、替代食材三项是否齐全。</li>
+            <li><strong>旅行 Vlog</strong>：看节点数据密度，注意拍摄季节。</li>
+            <li><strong>影视解说</strong>：看是否标注原片时间点，结构是否按时间线。</li>
+            <li><strong>知识科普</strong>：看案例出处，优先选带具体档案的内容。</li>
+            <li><strong>健身跟练</strong>：看是否有低冲击替代动作和倒计时提示。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 板块6：体验指南 -->
+      <section class="section-block" id="guide" aria-labelledby="guide-title">
+        <h2 id="guide-title">不同场景下的短视频观看顺序</h2>
+        <p class="section-intro">按可用时间和观看目的，给出内容消费的顺序建议与判断依据。</p>
+        <ol class="guide-steps">
+          <li>
+            <strong>5 分钟碎片时间：优先搞笑短剧与萌宠日常</strong>
+            单集时长短、无需前置知识，适合通勤或排队场景。先看一集是否在前 30 秒建立场景，再决定是否连续看。
+          </li>
+          <li>
+            <strong>15 到 30 分钟：选择美食教程或知识科普</strong>
+            这类内容需要一定注意力。美食教程优先看步骤表，知识科普优先看是否有具体案例，避免选纯观点输出型内容。
+          </li>
+          <li>
+            <strong>规划出行前：看旅行 Vlog 的攻略型分集</strong>
+            重点看行车时长、海拔变化和住宿节点，跳过纯氛围片段。同一路线选拍摄月份接近的 Vlog 参考。
+          </li>
+          <li>
+            <strong>想看影视内容：先看解说再决定是否看原片</strong>
+            解说可快速判断剧情类型和反转结构。选标注原片时间点的解说，方便后续对照观看。
+          </li>
+          <li>
+            <strong>跟练类内容：先看低冲击版本再进阶</strong>
+            健身跟练优先确认是否有动作替代方案。首次跟练选标注倒计时和动作要领的版本，降低受伤风险。
+          </li>
+        </ol>
+      </section>
+
+      <!-- 板块7：FAQ -->
+      <section class="section-block" id="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">常见问答</h2>
+        <div class="faq-list">
+          <details>
+            <summary>搞笑短剧一般多久更新一集？</summary>
+            <p class="faq-answer">以《合租室友的奇葩日常》为例，常规更新节奏为每周两集，分别在周二和周五晚间上线。季播期间偶尔加更，具体以条目页更新记录为准。不同短剧的更新频率差异较大，部分日更短剧每天一集，篇幅通常更短。</p>
+          </details>
+          <details>
+            <summary>美食教程和美食探店有什么区别？</summary>
+            <p class="faq-answer">美食教程侧重步骤可复现，提供食材分量、火候和操作顺序，目标是让观众在家做出来。美食探店侧重餐厅环境、菜品呈现和口味描述，提供消费参考。选择时看目的是自己做还是外出吃。</p>
+          </details>
+          <details>
+            <summary>第一次看旅行 Vlog 从哪个条目开始比较好？</summary>
+            <p class="faq-answer">如果目的是规划路线，建议从带有每日行车数据和海拔标注的攻略型 Vlog 开始，例如川西环线类内容。如果只是放松观看，从单集氛围记录型 Vlog 入手更轻松。先明确自己是找路线参考还是看风景记录。</p>
+          </details>
+          <details>
+            <summary>影视解说和原片应该先看哪个？</summary>
+            <p class="faq-answer">悬疑类建议先看原片再看解说，避免反转被提前透露；节奏较慢的剧情片可以先看解说判断类型是否适合自己，再决定是否看原片。选择标注原片时间点的解说，便于后续对照回看。</p>
+          </details>
+          <details>
+            <summary>知识科普类短视频的准确性怎么判断？</summary>
+            <p class="faq-answer">看是否给出案例出处、数据来源或文献参考。以飞机窗户圆角科普为例，引用具体事故调查档案的内容可信度高于只讲结论的版本。另外可以看创作者是否区分事实陈述与个人推测。</p>
+          </details>
+          <details>
+            <summary>健身跟练视频适合完全没有基础的人吗？</summary>
+            <p class="faq-answer">部分跟练视频提供低冲击替代动作，适合零基础人群。选择时确认视频是否标注动作替代方案、有无倒计时提示以及是否说明发力要点。首次跟练建议选标注「低冲击版」或「入门版」的分集。</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- 板块8：用户评论 -->
+      <section class="section-block" id="comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">用户评论</h2>
+        <div class="comment-list">
+          <div class="comment-item"><div class="comment-user">@夜宵摊主</div>《合租室友的奇葩日常》第 18 集那个电费分摊反转太真实了，合租过的都懂。</div>
+          <div class="comment-item"><div class="comment-user">@拉面爱好者</div>深夜厨房的汤底替代方案试过了，用干香菇粉效果确实接近，比想象中好操作。</div>
+          <div class="comment-item"><div class="comment-user">@川西老司机</div>川西环线的行车时长标注比较保守，实际开下来差不多，适合第一次去的人参考。</div>
+          <div class="comment-item"><div class="comment-user">@悬疑片仓库</div>《消失的客人》解说把证词矛盾点整理成表，这个做法对复盘很有用，就是节奏稍快。</div>
+          <div class="comment-item"><div class="comment-user">@橘猫观察员</div>年糕减肥计划看了 40 多天，兽医建议那部分挺实用的，不是单纯卖萌。</div>
+          <div class="comment-item"><div class="comment-user">@航空迷小张</div>飞机窗户圆角那期引用了彗星客机事故档案，比一般科普讲得深，5 分钟信息量足。</div>
+          <div class="comment-item"><div class="comment-user">@膝盖不太好</div>HIIT 低冲击版跟练了三天，动作替代做得不错，没有加重膝盖负担。</div>
+          <div class="comment-item"><div class="comment-user">@手作新手</div>牛仔裤改托特包的图纸标注了尺寸，手缝部分讲得细，第一次做也勉强完成了。</div>
+          <div class="comment-item"><div class="comment-user">@耳机对比党</div>千元耳机横评更新了三款新品，降噪数据列得清楚，比只看结论的评测有用。</div>
+          <div class="comment-item"><div class="comment-user">@爵士小酒馆常客</div>音乐现场第 7 期选曲不错，Bossa Nova 那几首现场收音干净，适合背景播放。</div>
+          <div class="comment-item"><div class="comment-user">@美食复现困难户</div>美食教程如果能多标一下替代食材就更好了，有些调料小城市不太好买。</div>
+          <div class="comment-item"><div class="comment-user">@短剧编剧观察</div>合租题材短剧现在挺多的，这部胜在台词密度，但第三季有几集反转有点强行。</div>
+          <div class="comment-item"><div class="comment-user">@旅行规划中</div>川西 Vlog 的住宿节点如果能附上价格区间就更完整了，现在只有名字。</div>
+          <div class="comment-item"><div class="comment-user">@科普挑刺王</div>飞机窗户那期整体准确，不过金属疲劳的示意图如果能更清楚一点会更好。</div>
+          <div class="comment-item"><div class="comment-user">@深夜刷视频</div>茄子短视频官网上的条目类型分得比较清楚，找美食教程不用翻半天。</div>
+          <div class="comment-item"><div class="comment-user">@年糕粉丝</div>希望年糕减肥计划能出一期总结，把 90 天的饮食变化整理成表格。</div>
+        </div>
+      </section>
+
+      <!-- 板块9：相关资讯 -->
+      <section class="section-block" id="news" aria-labelledby="news-title">
+        <h2 id="news-title">相关资讯</h2>
+        <ul class="news-list">
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news01/600/400" alt="短剧精品化趋势讨论会现场照片" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">短剧精品化趋势：单集成本上涨 40%</div>
+              <div class="news-date">2026-11-07</div>
+              <p class="news-summary">多家短剧制作团队在 11 月第一周透露，近期单集制作成本较上半年上涨约 40%，主要集中在剧本打磨和后期音效上。</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news02/600/400" alt="美食教程创作者交流会现场" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">美食教程向「场景化操作」转型</div>
+              <div class="news-date">2026-11-06</div>
+              <p class="news-summary">近期美食教程类内容出现明显变化，创作者更多按「一人食」「加班晚餐」「租房厨房」等场景组织内容，替代传统按菜系分类。</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news03/600/400" alt="川西自驾路线实拍" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">川西环线 11 月路况提示发布</div>
+              <div class="news-date">2026-11-05</div>
+              <p class="news-summary">折多山段进入冬季管制期，每日 18 时后限制通行。部分旅行 Vlog 已在条目页补充最新路况说明。</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news04/600/400" alt="影视解说版权规范讨论" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">影视解说标注原片时间点成为新惯例</div>
+              <div class="news-date">2026-11-03</div>
+              <p class="news-summary">越来越多影视解说视频在简介中标注关键情节对应的原片时间点，方便观众对照观看，减少剧透争议。</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news05/600/400" alt="萌宠内容创作者拍摄现场" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">萌宠类内容向「长期记录」方向延伸</div>
+              <div class="news-date">2026-11-02</div>
+              <p class="news-summary">橘猫年糕减肥计划等长期记录型萌宠内容获得较多关注，创作者开始按 30 天、90 天为周期规划内容线。</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/qiezi-news06/600/400" alt="知识科普创作者使用档案资料" width="600" height="400" loading="lazy">
+            <div class="news-content">
+              <div class="news-title">知识科普类内容开始标注档案来源</div>
+              <div class="news-date">2026-10-30</div>
+              <p class="news-summary">部分科普创作者在视频中直接引用事故调查报告、学术论文编号等原始资料，提升内容可追溯性。</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 板块10：相关推荐 -->
+      <section class="section-block" id="recommend" aria-labelledby="recommend-title">
+        <h2 id="recommend-title">相关推荐</h2>
+        <p class="section-intro">延伸内容方向与具体条目索引，按兴趣类型选择。</p>
+        <div class="recommend-tags">
+          <a href="/#featured">合租题材短剧合集</a>
+          <a href="/#featured">一人食快手菜谱</a>
+          <a href="/#featured">川西自驾路线参考</a>
+          <a href="/#featured">西班牙悬疑片解说</a>
+          <a href="/#featured">猫咪科学减重记录</a>
+          <a href="/#featured">航空安全科普系列</a>
+          <a href="/#featured">零器械居家跟练</a>
+          <a href="/#featured">旧物改造手工教程</a>
+        </div>
+      </section>
+
+      <!-- 板块11：热门榜单 -->
+      <section class="section-block" id="ranking" aria-labelledby="ranking-title">
+        <h2 id="ranking-title">本周热门条目榜</h2>
+        <p class="section-intro">按 11 月 1 日至 11 月 8 日热度数据整理。</p>
+        <ol class="rank-list">
+          <li><span class="rank-name">《消失的客人》深度解说</span><span class="rank-score">热度 102.3 万</span></li>
+          <li><span class="rank-name">合租室友的奇葩日常 第 3 季</span><span class="rank-score">热度 98.2 万</span></li>
+          <li><span class="rank-name">川西环线自驾全记录</span><span class="rank-score">热度 89.1 万</span></li>
+          <li><span class="rank-name">深夜厨房：一人食拉面</span><span class="rank-score">热度 76.5 万</span></li>
+          <li><span class="rank-name">橘猫年糕的减肥计划</span><span class="rank-score">热度 67.8 万</span></li>
+          <li><span class="rank-name">15 分钟燃脂 HIIT 跟练</span><span class="rank-score">热度 61.2 万</span></li>
+          <li><span class="rank-name">为什么飞机窗户是圆角</span><span class="rank-score">热度 55.4 万</span></li>
+          <li><span class="rank-name">旧牛仔裤改造成托特包</span><span class="rank-score">热度 43.7 万</span></li>
+        </ol>
+      </section>
+
+    </main>
+
+    <!-- 右侧辅助栏 -->
+    <aside class="sidebar-right" aria-label="辅助信息">
+      <div class="sidebar-card">
+        <h3>今日热榜</h3>
+        <ul class="hot-list">
+          <li><span class="hot-index">1</span><span class="hot-name">消失的客人解说</span><span class="hot-tag">影视</span></li>
+          <li><span class="hot-index">2</span><span class="hot-name">合租室友奇葩日常</span><span class="hot-tag">搞笑</span></li>
+          <li><span class="hot-index">3</span><span class="hot-name">川西环线自驾</span><span class="hot-tag">旅行</span></li>
+          <li><span class="hot-index">4</span><span class="hot-name">一人食拉面教程</span><span class="hot-tag">美食</span></li>
+          <li><span class="hot-index">5</span><span class="hot-name">橘猫年糕减肥</span><span class="hot-tag">萌宠</span></li>
+          <li><span class="hot-index">6</span><span class="hot-name">飞机窗户圆角科普</span><span class="hot-tag">知识</span></li>
+          <li><span class="hot-index">7</span><span class="hot-name">15 分钟燃脂 HIIT</span><span class="hot-tag">健身</span></li>
+          <li><span class="hot-index">8</span><span class="hot-name">牛仔裤改托特包</span><span class="hot-tag">手工</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-card">
+        <h3>最近更新流</h3>
+        <ul class="update-stream">
+          <li><span class="stream-time">今天 09:30</span><span>合租室友第 18 集</span></li>
+          <li><span class="stream-time">今天 08:15</span><span>深夜厨房汤底更新</span></li>
+          <li><span class="stream-time">昨天 21:10</span><span>川西环线第六集</span></li>
+          <li><span class="stream-time">昨天 18:40</span><span>年糕第 42 天记录</span></li>
+          <li><span class="stream-time">11 月 6 日</span><span>消失的客人解说扩展</span></li>
+          <li><span class="stream-time">11 月 5 日</span><span>HIIT 低冲击版上线</span></li>
+          <li><span class="stream-time">11 月 4 日</span><span>飞机窗户科普补充档案</span></li>
+        </ul>
+      </div>
+      <div class="sidebar-card">
+        <h3>分类速查</h3>
+        <ul class="hot-list">
+          <li><span class="hot-index">·</span><span class="hot-name">搞笑短剧</span></li>
+          <li><span class="hot-index">·</span><span class="hot-name">美食教程</span></li>
+          <li><span class="hot-index">·</span><span class="hot-name">旅行 Vlog</span></li>
+          <li><span class="hot-index">·</span><span class="hot-name">影视剪辑</span></li>
+          <li><span class="hot-index">·</span><span class="hot-name">萌宠日常</span></li>
+          <li><span class="hot-index">·</span><span class="hot-name">知识科普</span></li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- 页尾 -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">茄子短视频官网</div>
+          <p class="footer-desc">聚合搞笑短剧、美食教程、旅行 Vlog、影视剪辑、萌宠日常与知识科普等热门短视频内容，按类型分类浏览，发现每日新鲜看点。</p>
+        </div>
+        <div class="footer-col">
+          <h4>内容频道</h4>
+          <ul>
+            <li><a href="/#featured">搞笑短剧</a></li>
+            <li><a href="/#featured">美食教程</a></li>
+            <li><a href="/#featured">旅行 Vlog</a></li>
+            <li><a href="/#featured">影视剪辑</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>热门分类</h4>
+          <ul>
+            <li><a href="/#featured">萌宠日常</a></li>
+            <li><a href="/#featured">知识科普</a></li>
+            <li><a href="/#featured">健身跟练</a></li>
+            <li><a href="/#featured">手工 DIY</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>浏览指引</h4>
+          <ul>
+            <li><a href="/#latest-updates">最新更新</a></li>
+            <li><a href="/#deep-dive">深度解析</a></li>
+            <li><a href="/#faq">常见问答</a></li>
+            <li><a href="/#ranking">热门榜单</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 茄子短视频官网 · 内容聚合展示页</span>
+        <span>部分内容为示例数据，仅用于展示页面结构</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // 搜索功能：对精选卡片标题与描述进行筛选
+      var searchInput = document.getElementById('searchInput');
+      var searchBtn = document.getElementById('searchBtn');
+      var featuredGrid = document.getElementById('featuredGrid');
+      var noResultsEl = document.getElementById('noResults');
+
+      // 创建无结果提示元素并插入
+      if (!noResultsEl) {
+        noResultsEl = document.createElement('div');
+        noResultsEl.id = 'noResults';
+        noResultsEl.className = 'no-results';
+        noResultsEl.textContent = '没有找到匹配的短视频内容，试试其他关键词。';
+        featuredGrid.parentNode.insertBefore(noResultsEl, featuredGrid.nextSibling);
+      }
+
+      function performSearch() {
+        var query = searchInput.value.trim().toLowerCase();
+        var cards = featuredGrid.querySelectorAll('.content-card');
+        var visibleCount = 0;
+
+        cards.forEach(function(card) {
+          var title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+          var desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+          var tags = card.querySelector('.card-tags')?.textContent.toLowerCase() || '';
+          var match = !query || title.indexOf(query) !== -1 || desc.indexOf(query) !== -1 || tags.indexOf(query) !== -1;
+
+          if (match) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0 && query) {
+          noResultsEl.classList.add('visible');
+        } else {
+          noResultsEl.classList.remove('visible');
+        }
+      }
+
+      if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch();
+          }
+        });
+
+        // 输入时实时筛选（可选）
+        searchInput.addEventListener('input', function() {
+          if (searchInput.value.trim() === '') {
+            // 清空时恢复全部显示
+            var cards = featuredGrid.querySelectorAll('.content-card');
+            cards.forEach(function(card) { card.style.display = ''; });
+            noResultsEl.classList.remove('visible');
+          }
+        });
+      }
+
+      // 为 FAQ 的 details 添加键盘可见焦点
+      var summaries = document.querySelectorAll('.faq-list summary');
+      summaries.forEach(function(summary) {
+        summary.setAttribute('tabindex', '0');
+        summary.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            var details = summary.parentElement;
+            if (details.hasAttribute('open')) {
+              details.removeAttribute('open');
+            } else {
+              details.setAttribute('open', '');
+            }
+          }
+        });
+      });
+
+      // 处理锚点滚动偏移
+      function adjustScrollForHash() {
+        if (window.location.hash) {
+          var targetId = window.location.hash.substring(1);
+          var target = document.getElementById(targetId);
+          if (target) {
+            setTimeout(function() {
+              var stickyTop = document.querySelector('.sticky-top');
+              var offset = stickyTop ? stickyTop.offsetHeight + 12 : 120;
+              var elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+              window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+            }, 50);
+          }
+        }
+      }
+
+      window.addEventListener('hashchange', adjustScrollForHash);
+      // 页面加载后如果有 hash，也调整
+      window.addEventListener('load', function() {
+        if (window.location.hash) {
+          adjustScrollForHash();
+        }
+      });
+    })();
+  </script>
+</body>
+              </html>
